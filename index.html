@@ -221,11 +221,12 @@ function showTweet(tweet, append) {
   if (tweet.user.lang != "en") {
     try {
       var translation = require('apollo:google').translate(tweet.text, "en");
-      if (translatation.responseData.detectedSourceLanguage != "en")
+      if (translation.responseData.detectedSourceLanguage != "en")
         tweet.text += "(in plain english: '"+
         translation.responseData.translatedText +"')";
     }
     catch (e) {
+      require('apollo:debug').log(e);
     }
   }
   
