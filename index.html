@@ -218,6 +218,17 @@ function showTweet(tweet, append) {
     var date_string = date.getDate() + "/" + date.getMonth();
   }
 
+  if (tweet.user.lang != "en") {
+    try {
+      var translation = require('apollo:google').translate(tweet.text, "en");
+      if (translatation.responseData.detectedSourceLanguage != "en")
+        tweet.text += "(in plain english: '"+
+        translation.responseData.translatedText +"')";
+    }
+    catch (e) {
+    }
+  }
+  
   if (tweet.entities && tweet.entities.urls) {
     for (var i = tweet.entities.urls.length - 1, entity; entity = tweet.entities.urls[i]; --i) {
       tweet.text = common.supplant("{a}<a target='_blank' href='{b}'>{b}</a>{c}", {
